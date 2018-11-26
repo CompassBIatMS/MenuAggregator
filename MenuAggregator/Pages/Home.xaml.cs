@@ -194,16 +194,16 @@ namespace MenuAggregator.Pages
         {
             int i = 0;
             int gridRowCount;
-            string concept = conceptName;
+            //string concept = conceptName;
             int fillCBPeriod = 0;
             int fillCBWeek = 0;
 
-            if (concept == "Chefs Table")
+            if (conceptName == "Chefs Table")
             {
                 gridRowCount = 3;
                 
             }
-            else if (concept == "Street Eats")
+            else if (conceptName == "Street Eats")
             {
                 gridRowCount = 2;
             }
@@ -277,7 +277,7 @@ namespace MenuAggregator.Pages
             box.FontSize = 24;
             box.Height = 98;
             box.IsChanged = 0;
-            box.Tag = concept + "," + day + "," + PkObject.CurrentPeriod + "," + WkObject.CurrentWeek;
+            box.Tag = conceptName + "," + day + "," + PkObject.CurrentPeriod + "," + WkObject.CurrentWeek;
             Grid grid = new Grid();
             ColumnDefinition column1 = new ColumnDefinition();
             column1.Width = new GridLength(235);
@@ -410,7 +410,6 @@ namespace MenuAggregator.Pages
             groupBoxes.Add(box);
             return box;
         }
-
 
         //This will extract the values from the dictionary and put in a list for iterating through
         private List<string> GetDictionaryItem(Dictionary<string, string> d)
@@ -804,7 +803,13 @@ namespace MenuAggregator.Pages
 
         private void copyButton_Click(object sender, RoutedEventArgs e)
         {
-            ComboBox cb = new ComboBox();
+            ComboBox menucb = new ComboBox();
+            ComboBox pricecb = new ComboBox();
+            menucb.SelectedItem = menucbObject.SelectedItem;
+            menucb.Text = menucbObject.Text;
+            pricecb.SelectedItem = pricecbObject.SelectedItem;
+            pricecb.Text = pricecbObject.Text;
+
             
         }
 
