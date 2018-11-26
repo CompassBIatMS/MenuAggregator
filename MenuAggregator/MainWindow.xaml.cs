@@ -140,15 +140,24 @@ namespace MenuAggregator
         public static NewButton CreateButton(DataTable dt, int i)
         {
             string bid;
+            string dtName = dt.TableName;
             NewButton button = new NewButton();
-            
             Style style = new Style();
             style = Application.Current.FindResource("custButton") as Style;
             button.Name = "changedMenuButton";
             bid = dt.Rows[i][0].ToString();
             button.Bid = Int32.Parse(bid);
             button.Tag = dt.Rows[i][2].ToString();
-            button.Content = dt.Rows[i][4];
+
+            if(dtName == "MenuBuilder.WeeklyMenus")
+            {
+                button.Content = dt.Rows[i][4];
+            }
+            else
+            {
+                button.Content = dt.Rows[i][1];
+            }
+
             button.Style = style;
             button.Margin = new Thickness(3, 0, 3, 6);
             //button.AddHandler(NewButton.ClickEvent, new RoutedEventHandler(ChangedMenuButton_Click));

@@ -28,7 +28,6 @@ namespace MenuAggregator.Pages
         public static string NavigateFrom;
         static WeekChooser WkObjectBack = MainWindow.Wk;
         PeriodChooser PkObjectBack = MainWindow.Pk;
-        //int minWeek = 1;
         public static int mondayCount = 0;
         public string Cafe;
         MenuBuilderDataSet ds = new MenuBuilderDataSet();
