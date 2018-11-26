@@ -4095,8 +4095,8 @@ FROM            [MenuBuilder.Concepts] INNER JOIN
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "SELECT PID, menuName, conceptId FROM dbo.[MenuBuilder.SubMenus] WHERE conceptId =" +
-                " @conceptId";
+            this._commandCollection[1].CommandText = "SELECT PID, conceptId, menuName FROM [MenuBuilder.SubMenus] WHERE (conceptId = @c" +
+                "onceptId) ORDER BY menuName ASC";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@conceptId", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 0, 0, "conceptId", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }

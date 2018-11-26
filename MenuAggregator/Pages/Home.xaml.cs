@@ -213,18 +213,18 @@ namespace MenuAggregator.Pages
             }
             insertCount = gridRowCount;
             
-            MenuBuilderDataSetTableAdapters.MenuBuilder_PriceTableAdapter priceAdapter = new MenuBuilderDataSetTableAdapters.MenuBuilder_PriceTableAdapter();
-            MenuBuilderDataSetTableAdapters.MenuBuilder_SubMenusTableAdapter subMenuAdapter = new MenuBuilderDataSetTableAdapters.MenuBuilder_SubMenusTableAdapter();
+            //MenuBuilderDataSetTableAdapters.MenuBuilder_PriceTableAdapter priceAdapter = new MenuBuilderDataSetTableAdapters.MenuBuilder_PriceTableAdapter();
+            //MenuBuilderDataSetTableAdapters.MenuBuilder_SubMenusTableAdapter subMenuAdapter = new MenuBuilderDataSetTableAdapters.MenuBuilder_SubMenusTableAdapter();
             MenuBuilderDataSetTableAdapters.MenuBuilder_WeeklyMenusTableAdapter weeklyMenuAdapter = new MenuBuilderDataSetTableAdapters.MenuBuilder_WeeklyMenusTableAdapter();
             MenuBuilderDataSetTableAdapters.MenuBuilder_ConceptsTableAdapter conceptsAdapter = new MenuBuilderDataSetTableAdapters.MenuBuilder_ConceptsTableAdapter();
 
-            //create a table and fill with all prices
-            priceAdapter.Fill(ds._MenuBuilder_Price);
-            DataTable priceTable = ds._MenuBuilder_Price as DataTable;
+            ////create a table and fill with all prices
+            //priceAdapter.Fill(ds._MenuBuilder_Price);
+            //DataTable priceTable = ds._MenuBuilder_Price as DataTable;
 
-            //create a table that only fills with menu items associated with the button pressed
-            DataTable subMenuTable = ds._MenuBuilder_SubMenus as DataTable;
-            subMenuAdapter.FillByConceptId(ds._MenuBuilder_SubMenus, bid);
+            ////create a table that only fills with menu items associated with the button pressed
+            //DataTable subMenuTable = ds._MenuBuilder_SubMenus as DataTable;
+            //subMenuAdapter.FillByConceptId(ds._MenuBuilder_SubMenus, bid);
 
             //Look at the conepts table to determine if the the price of this concept is editable by the cafe
             MenuBuilderDataSet._MenuBuilder_ConceptsDataTable cTable = new MenuBuilderDataSet._MenuBuilder_ConceptsDataTable();
@@ -292,7 +292,10 @@ namespace MenuAggregator.Pages
             int gridRow = 0;
             for (int c = 0; c <= gridRowCount - 1; c++)
             {
-                GroupBoxRow boxRow = new GroupBoxRow(box, gridRowCount, j, gridRow, c);
+                GroupBoxRow boxRow = new GroupBoxRow(box, gridRowCount, j, gridRow, c, bid);
+                //ComboBox menucbObject = new ComboBox();
+                //ComboBox pricecbObject = new ComboBox();
+                //TextBox textObject = new TextBox();
                 //if (gridRowCount == 3)
                 //{
                 //    box.Height = 160;
@@ -329,7 +332,7 @@ namespace MenuAggregator.Pages
                 //pricecb.Width = 90;
                 //pricecb.FontSize = 16;
                 //pricecb.Height = 30;
-                
+
                 //pricecb.Tag = "PriceCb" + j + gridRow + 1;
 
                 //TextBox text = new TextBox();
@@ -341,18 +344,20 @@ namespace MenuAggregator.Pages
                 //notesToAdd.Add(text.Text); //text is set to null and added to notesToAdd for inserting to dB later
                 //dictionaryTextItemToAdd.Add(text.Tag.ToString(), text.Text);
 
-                //add menu name from sub menu table to the combobox
-                foreach (DataRow row in subMenuTable.Rows)
-                {
-                    boxRow.MenuCb.Items.Add(row[1]);
-                    //menucb.Items.Add(row[1]);
-                }
+                ////add menu name from sub menu table to the combobox
+                //foreach (DataRow row in subMenuTable.Rows)
+                //{
+                //    boxRow.MenuCb.Items.Add(row[1]);
+                //    //menucb.Items.Add(row[1]);
+                //}
+                //boxRow.MenuCb.Items.Add("PROMO");
+                //boxRow.MenuCb.Items.Add("Station Closed");
 
-                //add price text from price table to combobox
-                foreach (DataRow row in priceTable.Rows)
-                {
-                    boxRow.PriceCb.Items.Add(row[1]);
-                }
+                ////add price text from price table to combobox
+                //foreach (DataRow row in priceTable.Rows)
+                //{
+                //    boxRow.PriceCb.Items.Add(row[1]);
+                //}
 
                 //set display text of combo and text boxes 
                 boxRow.MenuCb.SelectedItem = setMenuCBDispalyList[l];
@@ -375,9 +380,13 @@ namespace MenuAggregator.Pages
                 dictionaryListIsChanged.Add(boxRow.PriceCb.Tag.ToString(), 0);
                 dictionaryListIsChanged.Add(boxRow.Text.Tag.ToString(), 0);
 
-                menucbObject = menucb;
-                pricecbObject = pricecb;
-                textObject = text;
+                menucbObject = boxRow.MenuCb;
+                pricecbObject = boxRow.PriceCb;
+                textObject = boxRow.Text;
+
+                //menucbObject = menucb;
+                //pricecbObject = pricecb;
+                //textObject = text;
 
                 //dictionaryMenuItemToAdd.Add(menucb.Tag.ToString(), menucb.Text);
                 //dictionaryPriceItemToAdd.Add(pricecb.Tag.ToString(), pricecb.Text);
@@ -394,26 +403,38 @@ namespace MenuAggregator.Pages
                 if (priceEditable == "0")
                 {
                     column2.Width = new GridLength(0);
-                    pricecb.Visibility = Visibility.Hidden;
+                    //pricecb.Visibility = Visibility.Hidden;
+                    boxRow.PriceCb.Visibility = Visibility.Hidden;
                 }
 
                 //add menucb and price cb to grid created in groupbox 
-                Grid.SetColumn(menucbObject, 0);
-                Grid.SetRow(menucbObject, c);
-                grid.Children.Add(menucbObject);
+                //Grid.SetColumn(menucbObject, 0);
+                //Grid.SetRow(menucbObject, c);
+                //grid.Children.Add(menucbObject);
+                ////Grid.SetColumn(menucbObject, 0);
+                ////Grid.SetRow(menucbObject, c);
+                ////grid.Children.Add(menucbObject);
 
-                Grid.SetColumn(pricecbObject, 1);
-                Grid.SetRow(pricecbObject, c);
-                grid.Children.Add(pricecbObject);
-               
-                Grid.SetColumn(textObject, 2);
-                Grid.SetRow(textObject, c);
-                grid.Children.Add(textObject);
+                //Grid.SetColumn(pricecbObject, 1);
+                //Grid.SetRow(pricecbObject, c);
+                //grid.Children.Add(pricecbObject);
 
-                menucb.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(menucb_SelectionChanged));
-                pricecb.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(pricecb_SelectionChanged));
-                text.AddHandler(TextBox.LostKeyboardFocusEvent, new KeyboardFocusChangedEventHandler(text_LostFocus));
-              
+                //Grid.SetColumn(textObject, 2);
+                //Grid.SetRow(textObject, c);
+                //grid.Children.Add(textObject);
+
+                boxRow.MenuCb.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(menucb_SelectionChanged));
+                boxRow.PriceCb.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(pricecb_SelectionChanged));
+                boxRow.Text.AddHandler(TextBox.LostKeyboardFocusEvent, new KeyboardFocusChangedEventHandler(text_LostFocus));
+
+                //menucb.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(menucb_SelectionChanged));
+                //pricecb.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(pricecb_SelectionChanged));
+                //text.AddHandler(TextBox.LostKeyboardFocusEvent, new KeyboardFocusChangedEventHandler(text_LostFocus));
+
+                //menucbObject = boxRow.MenuCb;
+                //pricecbObject = boxRow.PriceCb;
+                //textObject = boxRow.Text;
+
                 k++;
                 gridRow++;
                 l++;
@@ -821,12 +842,12 @@ namespace MenuAggregator.Pages
 
         private void copyButton_Click(object sender, RoutedEventArgs e)
         {
-            ComboBox menucb = new ComboBox();
-            ComboBox pricecb = new ComboBox();
-            menucb.SelectedItem = menucbObject.SelectedItem;
-            menucb.Text = menucbObject.Text;
-            pricecb.SelectedItem = pricecbObject.SelectedItem;
-            pricecb.Text = pricecbObject.Text;
+            //ComboBox menucb = new ComboBox();
+            //ComboBox pricecb = new ComboBox();
+            //menucb.SelectedItem = menucbObject.SelectedItem;
+            //menucb.Text = menucbObject.Text;
+            //pricecb.SelectedItem = pricecbObject.SelectedItem;
+            //pricecb.Text = pricecbObject.Text;
 
             
         }

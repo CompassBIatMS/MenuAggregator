@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +12,13 @@ namespace MenuAggregator.Classes
     public class GroupBoxRow 
     {
         private int _isChanged;
-        private ComboBox _pricecb;
-        private TextBox _textbox;
+        private ComboBox _menucb = new ComboBox();
+        private ComboBox _pricecb = new ComboBox();
+        private TextBox _textbox = new TextBox();
+        MenuBuilderDataSet ds = new MenuBuilderDataSet();
+        MenuBuilderDataSetTableAdapters.MenuBuilder_PriceTableAdapter priceAdapter = new MenuBuilderDataSetTableAdapters.MenuBuilder_PriceTableAdapter();
+        MenuBuilderDataSetTableAdapters.MenuBuilder_SubMenusTableAdapter subMenuAdapter = new MenuBuilderDataSetTableAdapters.MenuBuilder_SubMenusTableAdapter();
+
 
         public int IsChanged
         {
@@ -26,12 +32,53 @@ namespace MenuAggregator.Classes
             }
         }
 
-        public ComboBox MenuCb { get; set; }
-        public ComboBox PriceCb { get; set; }
-        public TextBox Text { get; set; }
-       
-        public GroupBoxRow(NewGroupBox box, int gridRowCount, int j, int gridRow, int c)
+        public ComboBox MenuCb
+        { get
+            {
+                return _menucb;
+            }
+              set
+            {
+                _menucb = value;
+            }
+        }
+
+        public ComboBox PriceCb
         {
+            get
+            {
+                return _pricecb;
+            }
+            set
+            {
+                _pricecb = value;
+            }
+        }
+
+        public TextBox Text
+        {
+            get
+            {
+                return _textbox;
+            }
+            set
+            {
+                _textbox = value;
+            }
+        }
+
+        //public ComboBox PriceCb { get; set; }
+        //public TextBox Text { get; set; }
+
+        public GroupBoxRow(NewGroupBox box, int gridRowCount, int j, int gridRow, int c, int? bid)
+        {
+
+            priceAdapter.Fill(ds._MenuBuilder_Price);
+            DataTable priceTable = ds._MenuBuilder_Price as DataTable;
+
+            //create a table that only fills with menu items associated with the button pressed
+            DataTable subMenuTable = ds._MenuBuilder_SubMenus as DataTable;
+            subMenuAdapter.FillByConceptId(ds._MenuBuilder_SubMenus, bid);
             IsChanged = _isChanged;
             Grid grid = new Grid();
             ColumnDefinition column1 = new ColumnDefinition();
@@ -39,6 +86,7 @@ namespace MenuAggregator.Classes
             ColumnDefinition column2 = new ColumnDefinition();
             column2.Width = new GridLength(95);
             ColumnDefinition column3 = new ColumnDefinition();
+            
 
             grid.ColumnDefinitions.Add(column1);
             grid.ColumnDefinitions.Add(column2);
@@ -47,31 +95,38 @@ namespace MenuAggregator.Classes
             //int gridRow = 0;
             
 
-                if (gridRowCount == 3)
-                {
-                    box.Height = 160;
-                    RowDefinition row1 = new RowDefinition();
-                    row1.Height = new GridLength(40);
-                    //RowDefinition row2 = new RowDefinition();
-                    //row2.Height = new GridLength(40);
+            if (gridRowCount == 3)
+            {
+                box.Height = 160;
+                //RowDefinition row1 = new RowDefinition();
+                //row1.Height = new GridLength(40);
+                //RowDefinition row2 = new RowDefinition();
+                //row2.Height = new GridLength(40);
 
 
-                    grid.RowDefinitions.Add(row1);
-                    //grid.RowDefinitions.Add(row2);
+                //grid.RowDefinitions.Add(row1);
+                //grid.RowDefinitions.Add(row2);
 
-                }
-                else if (gridRowCount == 2)
-                {
-                    box.Height = 130;
-                    RowDefinition row1 = new RowDefinition();
-                    row1.Height = new GridLength(40);
+            }
+            else if (gridRowCount == 2)
+            {
+                box.Height = 130;
+                //RowDefinition row1 = new RowDefinition();
+                //row1.Height = new GridLength(40);
 
-                    grid.RowDefinitions.Add(row1);
-                }
-                else
-                {
-                    box.Height = 80;
-                }
+                //grid.RowDefinitions.Add(row1);
+            }
+            else
+            {
+                box.Height = 80;
+            }
+
+            for (int i = 0; i <= gridRowCount-1; i++)
+            {
+                RowDefinition row = new RowDefinition();
+                row.Height = new GridLength(40);
+                grid.RowDefinitions.Add(row);
+            }
 
             //ComboBox menucb = new ComboBox();
             MenuCb.Width = 230;
@@ -90,6 +145,20 @@ namespace MenuAggregator.Classes
             Text.Height = 30;
             Text.Text = null;
             Text.Tag = "TextBox" + j + gridRow + 2; //tag is set to iterator for accessing later
+
+            foreach (DataRow row in subMenuTable.Rows)
+            {
+               MenuCb.Items.Add(row[1]);
+                //menucb.Items.Add(row[1]);
+            }
+            MenuCb.Items.Add("PROMO");
+           MenuCb.Items.Add("Station Closed");
+
+            //add price text from price table to combobox
+            foreach (DataRow row in priceTable.Rows)
+            {
+                PriceCb.Items.Add(row[1]);
+            }
 
             Grid.SetColumn(MenuCb, 0);
             Grid.SetRow(MenuCb, c);
