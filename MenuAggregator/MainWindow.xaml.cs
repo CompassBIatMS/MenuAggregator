@@ -103,6 +103,7 @@ namespace MenuAggregator
             }
         }
 
+        #region public application wide methods
         public static int GetPeriod(DateTime today)
         {
 
@@ -135,5 +136,25 @@ namespace MenuAggregator
             int currentMonday = monday.CountMondays(firstOfMonth, today);
             return currentMonday;
         }
+
+        public static NewButton CreateButton(DataTable dt, int i)
+        {
+            string bid;
+            NewButton button = new NewButton();
+            
+            Style style = new Style();
+            style = Application.Current.FindResource("custButton") as Style;
+            button.Name = "changedMenuButton";
+            bid = dt.Rows[i][0].ToString();
+            button.Bid = Int32.Parse(bid);
+            button.Tag = dt.Rows[i][2].ToString();
+            button.Content = dt.Rows[i][4];
+            button.Style = style;
+            button.Margin = new Thickness(3, 0, 3, 6);
+            //button.AddHandler(NewButton.ClickEvent, new RoutedEventHandler(ChangedMenuButton_Click));
+
+            return button;
+        }
+        #endregion
     }
 }
