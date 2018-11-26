@@ -292,86 +292,104 @@ namespace MenuAggregator.Pages
             int gridRow = 0;
             for (int c = 0; c <= gridRowCount - 1; c++)
             {
+                GroupBoxRow boxRow = new GroupBoxRow(box, gridRowCount, j, gridRow, c);
+                //if (gridRowCount == 3)
+                //{
+                //    box.Height = 160;
+                //    RowDefinition row1 = new RowDefinition();
+                //    row1.Height = new GridLength(40);
+                //    RowDefinition row2 = new RowDefinition();
+                //    row2.Height = new GridLength(40);
 
-                if (gridRowCount == 3)
-                {
-                    box.Height = 160;
-                    RowDefinition row1 = new RowDefinition();
-                    row1.Height = new GridLength(40);
-                    RowDefinition row2 = new RowDefinition();
-                    row2.Height = new GridLength(40);
 
+                //    grid.RowDefinitions.Add(row1);
+                //    grid.RowDefinitions.Add(row2);
 
-                    grid.RowDefinitions.Add(row1);
-                    grid.RowDefinitions.Add(row2);
+                //}
+                //else if (gridRowCount == 2)
+                //{
+                //    box.Height = 130;
+                //    RowDefinition row1 = new RowDefinition();
+                //    row1.Height = new GridLength(40);
 
-                }
-                else if (gridRowCount == 2)
-                {
-                    box.Height = 130;
-                    RowDefinition row1 = new RowDefinition();
-                    row1.Height = new GridLength(40);
+                //    grid.RowDefinitions.Add(row1);
+                //}
+                //else
+                //{
+                //    box.Height = 80;
+                //}
 
-                    grid.RowDefinitions.Add(row1);
-                }
-                else
-                {
-                    box.Height = 80;
-                }
+                //ComboBox menucb = new ComboBox();
+                //menucb.Width = 230;
+                //menucb.FontSize = 16;
+                //menucb.Height = 30;
+                //menucb.Tag = "MenuCb" + j + gridRow + 0;
 
-                ComboBox menucb = new ComboBox();
-                menucb.Width = 230;
-                menucb.FontSize = 16;
-                menucb.Height = 30;
-                menucb.Tag = "MenuCb" + j + gridRow + 0;
-
-                ComboBox pricecb = new ComboBox();
-                pricecb.Width = 90;
-                pricecb.FontSize = 16;
-                pricecb.Height = 30;
+                //ComboBox pricecb = new ComboBox();
+                //pricecb.Width = 90;
+                //pricecb.FontSize = 16;
+                //pricecb.Height = 30;
                 
-                pricecb.Tag = "PriceCb" + j + gridRow + 1;
+                //pricecb.Tag = "PriceCb" + j + gridRow + 1;
 
-                TextBox text = new TextBox();
-                text.FontSize = 16;
-                text.Height = 30;
-                text.Text = null;
-                text.Tag = "TextBox" + j + gridRow + 2; //tag is set to iterator for accessing later
+                //TextBox text = new TextBox();
+                //text.FontSize = 16;
+                //text.Height = 30;
+                //text.Text = null;
+                //text.Tag = "TextBox" + j + gridRow + 2; //tag is set to iterator for accessing later
 
                 //notesToAdd.Add(text.Text); //text is set to null and added to notesToAdd for inserting to dB later
-                dictionaryTextItemToAdd.Add(text.Tag.ToString(), text.Text);
+                //dictionaryTextItemToAdd.Add(text.Tag.ToString(), text.Text);
 
                 //add menu name from sub menu table to the combobox
                 foreach (DataRow row in subMenuTable.Rows)
                 {
-
-                    menucb.Items.Add(row[1]);
+                    boxRow.MenuCb.Items.Add(row[1]);
+                    //menucb.Items.Add(row[1]);
                 }
 
                 //add price text from price table to combobox
                 foreach (DataRow row in priceTable.Rows)
                 {
-                    pricecb.Items.Add(row[1]);
+                    boxRow.PriceCb.Items.Add(row[1]);
                 }
 
                 //set display text of combo and text boxes 
-                menucb.SelectedItem = setMenuCBDispalyList[l];
-                pricecb.SelectedItem = setPriceCBDisplayList[l];
+                boxRow.MenuCb.SelectedItem = setMenuCBDispalyList[l];
+                boxRow.PriceCb.SelectedItem = setPriceCBDisplayList[l];
+                //menucb.SelectedItem = setMenuCBDispalyList[l];
+                //pricecb.SelectedItem = setPriceCBDisplayList[l];
 
-                menucb.Text = setMenuCBDispalyList[l];
-                pricecb.Text = setPriceCBDisplayList[l];
-                text.Text = setNotesTBDisplayList[l];
-                
-                dictionaryMenuItemToAdd.Add(menucb.Tag.ToString(), menucb.Text);
-                dictionaryPriceItemToAdd.Add(pricecb.Tag.ToString(), pricecb.Text);
+                boxRow.MenuCb.Text = setMenuCBDispalyList[l];
+                boxRow.PriceCb.Text = setPriceCBDisplayList[l];
+                boxRow.Text.Text = setNotesTBDisplayList[l];
+                //menucb.Text = setMenuCBDispalyList[l];
+                //pricecb.Text = setPriceCBDisplayList[l];
+                //text.Text = setNotesTBDisplayList[l];
 
-                dictionaryListIsChanged.Add(menucb.Tag.ToString(), 0);
-                dictionaryListIsChanged.Add(pricecb.Tag.ToString(), 0);
-                dictionaryListIsChanged.Add(text.Tag.ToString(), 0);
-                
+                dictionaryMenuItemToAdd.Add(boxRow.MenuCb.Tag.ToString(), boxRow.MenuCb.Text);
+                dictionaryPriceItemToAdd.Add(boxRow.PriceCb.Tag.ToString(), boxRow.PriceCb.Text);
+                dictionaryTextItemToAdd.Add(boxRow.Text.Tag.ToString(), boxRow.Text.Text);
+
+                dictionaryListIsChanged.Add(boxRow.MenuCb.Tag.ToString(), 0);
+                dictionaryListIsChanged.Add(boxRow.PriceCb.Tag.ToString(), 0);
+                dictionaryListIsChanged.Add(boxRow.Text.Tag.ToString(), 0);
+
                 menucbObject = menucb;
                 pricecbObject = pricecb;
                 textObject = text;
+
+                //dictionaryMenuItemToAdd.Add(menucb.Tag.ToString(), menucb.Text);
+                //dictionaryPriceItemToAdd.Add(pricecb.Tag.ToString(), pricecb.Text);
+                //dictionaryTextItemToAdd.Add(text.Tag.ToString(), text.Text);
+
+                //dictionaryListIsChanged.Add(menucb.Tag.ToString(), 0);
+                //dictionaryListIsChanged.Add(pricecb.Tag.ToString(), 0);
+                //dictionaryListIsChanged.Add(text.Tag.ToString(), 0);
+
+                //menucbObject = menucb;
+                //pricecbObject = pricecb;
+                //textObject = text;
 
                 if (priceEditable == "0")
                 {

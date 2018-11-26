@@ -105,6 +105,7 @@
       <DependentUpon>BIDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Classes\CountMonday.cs" />
+    <Compile Include="Classes\GroupBoxRow.cs" />
     <Compile Include="Classes\NewButton.cs" />
     <Compile Include="Classes\NewGroupBox.cs" />
     <Compile Include="Classes\PropertySupport.cs" />
